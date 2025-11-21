@@ -1792,11 +1792,7 @@ btnCalc.addEventListener('click', () => {
   window.location.href = 'Kalkulagailu/';
 });
 
-// initialize
-initLabels();
-show(elements[0], document.querySelector('.cell'));
-updateZoom();
-toggleTrendArrows(false);
+
 
 // [RESTO DEL CÓDIGO JAVASCRIPT PARA FUNCIONALIDADES ADICIONALES...]
 // Search functionality
@@ -1841,37 +1837,48 @@ searchInput.addEventListener('input', function() {
   });
 });
 
-// Zoom functionality
-let zoomLevel = 1;
-const minZoom = 0.5;
-const maxZoom = 2;
-const zoomStep = 0.05;
-
-function updateZoom() {
-  document.documentElement.style.setProperty('--zoom-level', zoomLevel);
-  document.getElementById('zoomLevel').textContent = Math.round(zoomLevel * 100) + '%';
-}
-
-document.getElementById('zoomIn').addEventListener('click', () => {
-  if (zoomLevel < maxZoom) {
-    zoomLevel += zoomStep;
-    updateZoom();
-  }
+// Search functionality
+searchInput.addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase().trim();
+  
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element;
+    
+    // Find the element in the appropriate dataset
+    if (z >= 57 && z <= 71) {
+      element = lanthanides.find(el => el.z === z);
+    } else if (z >= 89 && z <= 103) {
+      element = actinides.find(el => el.z === z);
+    } else {
+      element = elements.find(el => el.z === z);
+    }
+    
+    if (element) {
+      const matches = element.name.toLowerCase().includes(searchTerm) ||
+                     element.sym.toLowerCase().includes(searchTerm) ||
+                     element.z.toString().includes(searchTerm);
+      
+      // Remove previous search classes
+      cell.classList.remove('search-match', 'search-nomatch');
+      
+      if (searchTerm === '') {
+        // No search term - show all normally
+        cell.style.opacity = '';
+        cell.style.filter = '';
+        cell.style.transform = '';
+        cell.style.border = '';
+      } else if (matches) {
+        // Match found - highlight it
+        cell.classList.add('search-match');
+      } else {
+        // No match - dim it
+        cell.classList.add('search-nomatch');
+      }
+    }
+  });
 });
 
-document.getElementById('zoomOut').addEventListener('click', () => {
-  if (zoomLevel > minZoom) {
-    zoomLevel -= zoomStep;
-    updateZoom();
-  }
-});
-
-document.getElementById('zoomReset').addEventListener('click', () => {
-  zoomLevel = 1;
-  updateZoom();
-});
-</script>
-<script>
 /* ---------- ZOOM + AUTO-FIT JUNTOS ---------- */
 let userZoom = 1;
 
@@ -1911,9 +1918,15 @@ document.getElementById('zoomReset').addEventListener('click', () => {
 /* primera carga y redimensionados */
 applyZoom();
 window.addEventListener('resize', applyZoom);
+
+// initialize
+initLabels();
+show(elements[0], document.querySelector('.cell'));
+toggleTrendArrows(false);
 </script> 
 </body>
 </html>
+
 
 
 
