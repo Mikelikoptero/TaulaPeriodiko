@@ -1479,36 +1479,38 @@ elecToggleBtn.addEventListener('click', function() {
 function applyElectronBlockColors() {
   allCells.forEach(cell => {
     const z = parseInt(cell.dataset.z);
-    let element;
     
-    if (z >= 57 && z <= 71) {
-      element = lanthanides.find(el => el.z === z);
-    } else if (z >= 89 && z <= 103) {
-      element = actinides.find(el => el.z === z);
-    } else {
-      element = elements.find(el => el.z === z);
+    // Bloque s: Grupos 1 y 2 + Helio
+    if (z === 1 || z === 3 || z === 4 ||  // H, Li, Be
+        z === 11 || z === 12 ||           // Na, Mg
+        z === 19 || z === 20 ||           // K, Ca
+        z === 37 || z === 38 ||           // Rb, Sr
+        z === 55 || z === 56 ||           // Cs, Ba
+        z === 87 || z === 88 ||           // Fr, Ra
+        z === 2) {                        // He (aunque está en grupo 18, es bloque s)
+      cell.classList.add('s-block');
     }
-    
-    if (element) {
-      const config = element.config;
-      if (config) {
-        if (config.includes('s¹') || config.includes('s²')) {
-          cell.classList.add('s-block');
-        } else if (config.includes('p¹') || config.includes('p²') || config.includes('p³') || 
-                   config.includes('p⁴') || config.includes('p⁵') || config.includes('p⁶')) {
-          cell.classList.add('p-block');
-        } else if (config.includes('d¹') || config.includes('d²') || config.includes('d³') || 
-                   config.includes('d⁴') || config.includes('d⁵') || config.includes('d⁶') || 
-                   config.includes('d⁷') || config.includes('d⁸') || config.includes('d⁹') || config.includes('d¹⁰')) {
-          cell.classList.add('d-block');
-        } else if (config.includes('f¹') || config.includes('f²') || config.includes('f³') || 
-                   config.includes('f⁴') || config.includes('f⁵') || config.includes('f⁶') || 
-                   config.includes('f⁷') || config.includes('f⁸') || config.includes('f⁹') || 
-                   config.includes('f¹⁰') || config.includes('f¹¹') || config.includes('f¹²') || 
-                   config.includes('f¹³') || config.includes('f¹⁴')) {
-          cell.classList.add('f-block');
-        }
-      }
+    // Bloque p: Grupos 13-18 (excepto Helio)
+    else if ((z >= 5 && z <= 10) ||       // B, C, N, O, F, Ne
+             (z >= 13 && z <= 18) ||      // Al, Si, P, S, Cl, Ar
+             (z >= 31 && z <= 36) ||      // Ga, Ge, As, Se, Br, Kr
+             (z >= 49 && z <= 54) ||      // In, Sn, Sb, Te, I, Xe
+             (z >= 81 && z <= 86) ||      // Tl, Pb, Bi, Po, At, Rn
+             (z >= 113 && z <= 118)) {    // Nh, Fl, Mc, Lv, Ts, Og
+      cell.classList.add('p-block');
+    }
+    // Bloque d: Grupos 3-12 + Lutecio (71) + Lawrencio (103)
+    else if ((z >= 21 && z <= 30) ||      // Sc, Ti, V, Cr, Mn, Fe, Co, Ni, Cu, Zn
+             (z >= 39 && z <= 48) ||      // Y, Zr, Nb, Mo, Tc, Ru, Rh, Pd, Ag, Cd
+             (z >= 72 && z <= 80) ||      // Hf, Ta, W, Re, Os, Ir, Pt, Au, Hg
+             (z >= 104 && z <= 112) ||    // Rf, Db, Sg, Bh, Hs, Mt, Ds, Rg, Cn
+             z === 71 || z === 103) {     // Lu, Lr
+      cell.classList.add('d-block');
+    }
+    // Bloque f: Lantánidos (57-70) + Actínidos (89-102)
+    else if ((z >= 57 && z <= 70) ||      // La, Ce, Pr, Nd, Pm, Sm, Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb
+             (z >= 89 && z <= 102)) {     // Ac, Th, Pa, U, Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No
+      cell.classList.add('f-block');
     }
   });
 }
@@ -2048,6 +2050,7 @@ toggleTrendArrows(false);
 </script> 
 </body>
 </html>
+
 
 
 
