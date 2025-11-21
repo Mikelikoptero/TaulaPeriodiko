@@ -1367,10 +1367,6 @@ const actinides = [
  {z:103,sym:'Lr',name:'Lawrentzio',mass:266,val:[3],config:'[Rn] 7s² 5f¹⁴ 6d¹',group:'actinide',x:17,radius:0,electroneg:0,ionization:470}
 ];
 
-// [RESTO DEL CÓDIGO JAVASCRIPT IGUAL QUE ANTES]
-// Aquí iría todo el código JavaScript que ya tenías, manteniendo la misma funcionalidad
-// pero adaptado a los nuevos colores y estilos...
-
 const table = document.getElementById('table');
 const lanthanidesContainer = document.getElementById('lanthanides');
 const actinidesContainer = document.getElementById('actinides');
@@ -1411,8 +1407,7 @@ let isElectronegMode = false;
 let isRadiusMode = false;
 let isIonizationMode = false;
 
-// [CONTINÚA CON EL RESTO DEL CÓDIGO JAVASCRIPT...]
-
+// [RESTO DEL CÓDIGO JAVASCRIPT IGUAL QUE ANTES]
 // Función para mostrar/ocultar las flechas de tendencia
 function toggleTrendArrows(show, type) {
   const allArrows = trendArrows.querySelectorAll('.trend-arrow');
@@ -1470,13 +1465,386 @@ resourcesToggle.addEventListener('click', function(e) {
   }
 });
 
-// [CONTINÚA CON EL RESTO DE LAS FUNCIONES JAVASCRIPT...]
+// AQUÍ EMPIEZA LA PARTE IMPORTANTE - CREACIÓN DE ELEMENTOS EN LA TABLA
 
-// Inicialización
+// create grid placeholders to preserve spacing
+for(let r=1;r<=7;r++){
+  for(let c=1;c<=18;c++){
+    const ph = document.createElement('div');
+    ph.style.gridColumn=c;
+    ph.style.gridRow=r;
+    ph.style.visibility='hidden';
+    table.appendChild(ph);
+  }
+}
+
+// Add placeholder cells for 57-71 and 89-103
+function createPlaceholderCell(text, column, row) {
+  const placeholder = document.createElement('div');
+  placeholder.className = 'placeholder-cell';
+  placeholder.style.gridColumn = column;
+  placeholder.style.gridRow = row;
+  placeholder.textContent = text;
+  table.appendChild(placeholder);
+}
+
+// Create placeholders for lanthanides and actinides in main table
+createPlaceholderCell('57-71', 3, 6);
+createPlaceholderCell('89-103', 3, 7);
+
+// Create table legend with hover functionality
+function createTableLegend() {
+  const legend = document.createElement('div');
+  legend.className = 'table-legend';
+  
+  const legendItems = [
+    {color: '#fdf2f2', text: 'Metal Alkalinoak', group: 'alkali'},
+    {color: '#fef3e2', text: 'Metal Lurralkalinoak', group: 'alkaline'},
+    {color: '#e0f2fe', text: 'Trantsizio Metalak', group: 'transition'},
+    {color: '#f5f3ff', text: 'Beste metalak', group: 'post-transition'},
+    {color: '#f0fdf4', text: 'Metaloideak', group: 'metalloid'},
+    {color: '#fffbeb', text: 'Ez-metalak', group: 'nonmetal'},
+    {color: '#fff7ed', text: 'Halogenoak', group: 'halogen'},
+    {color: '#fdf2f8', text: 'Gas nobleak', group: 'noble'},
+    {color: '#f0fdf4', text: 'Lantanoideak', group: 'lanthanide'},
+    {color: '#fdf4ff', text: 'Aktinoideak', group: 'actinide'}
+  ];
+
+  legendItems.forEach(item => {
+    const legendItem = document.createElement('div');
+    legendItem.className = 'table-legend-item';
+    legendItem.dataset.group = item.group;
+    legendItem.innerHTML = `
+      <div class="sw" style="background:${item.color}"></div>
+      <span>${item.text}</span>
+    `;
+    
+    // Add hover events
+    legendItem.addEventListener('mouseenter', () => highlightGroup(item.group, legendItem));
+    legendItem.addEventListener('mouseleave', () => removeHighlight(legendItem));
+    
+    legend.appendChild(legendItem);
+  });
+
+  table.appendChild(legend);
+}
+
+// Highlight elements of a specific group
+function highlightGroup(group, legendItem) {
+  // Add active class to legend item
+  legendItem.classList.add('active');
+  
+  // Highlight matching cells and dim others
+  allCells.forEach(cell => {
+    if (cell.classList.contains(group)) {
+      cell.classList.add('highlighted');
+    } else {
+      cell.classList.add('dimmed');
+    }
+  });
+}
+
+// Remove highlighting
+function removeHighlight(legendItem) {
+  // Remove active class from legend item
+  legendItem.classList.remove('active');
+  
+  // Remove highlighting from all cells
+  allCells.forEach(cell => {
+    cell.classList.remove('highlighted');
+    cell.classList.remove('dimmed');
+  });
+}
+
+function groupClass(g){
+  switch(g){
+    case 'alkali': return 'alkali';
+    case 'alkaline': return 'alkaline';
+    case 'lanthanide': return 'lanthanide';
+    case 'actinide': return 'actinide';
+    case 'transition': return 'transition';
+    case 'post-transition': return 'post-transition';
+    case 'metalloid': return 'metalloid';
+    case 'nonmetal': return 'nonmetal';
+    case 'halogen': return 'halogen';
+    case 'noble': return 'noble';
+    default: return 'other';
+  }
+}
+
+// MODIFICADO: Función para destacar grupo y periodo - NO destacar grupo para lantánidos y actínidos
+function highlightGroupAndPeriod(group, period, isLanthanideOrActinide = false) {
+  // Remove previous highlights
+  removeGroupAndPeriodHighlights();
+  
+  // Solo destacar grupo si NO es un lantánido o actínido
+  if (!isLanthanideOrActinide && group >= 1 && group <= 18) {
+    const groupLabel = groupLabels[group - 1];
+    if (groupLabel) {
+      groupLabel.classList.add('highlighted');
+    }
+  }
+  
+  // Destacar periodo siempre (lantánidos son periodo 6, actínidos periodo 7)
+  if (period >= 1 && period <= 7) {
+    const periodLabel = periodLabels[period - 1];
+    if (periodLabel) {
+      periodLabel.classList.add('highlighted');
+    }
+  }
+}
+
+// Function to remove group and period highlights
+function removeGroupAndPeriodHighlights() {
+  groupLabels.forEach(label => label.classList.remove('highlighted'));
+  periodLabels.forEach(label => label.classList.remove('highlighted'));
+}
+
+// AQUÍ ESTÁ LA PARTE CLAVE - CREACIÓN Y AÑADIDO DE ELEMENTOS A LA TABLA
+
+// place main table elements
+elements.forEach(el=>{
+  const d = document.createElement('div');
+  d.className = 'cell ' + groupClass(el.group);
+  d.style.gridColumn = el.x;
+  d.style.gridRow = el.y;
+  d.dataset.z = el.z;
+  d.dataset.group = el.group;
+  d.dataset.period = el.y;
+  d.innerHTML = `<div style="display:flex;justify-content:space-between"><div class='num'>${el.z}</div></div><div style="text-align:center;margin-top:4px"><div class='sym'>${el.sym}</div><div class='ename'>${el.name}</div></div>`;
+  
+  // Add mouse events for highlighting group and period
+  d.addEventListener('mouseenter', () => {
+    highlightGroupAndPeriod(el.x, el.y, false); // No son lantánidos/actínidos
+  });
+  
+  d.addEventListener('mouseleave', () => {
+    removeGroupAndPeriodHighlights();
+  });
+  
+  d.addEventListener('click', ()=> show(el,d));
+  table.appendChild(d);
+  allCells.push(d);
+});
+
+// Create table legend
+createTableLegend();
+
+// place lanthanides (including La) - CORREGIDO: Los elementos empiezan en columna 1 del contenedor
+lanthanides.forEach((el, index)=>{
+  const d = document.createElement('div');
+  d.className = 'cell ' + groupClass(el.group);
+  // CORRECCIÓN: Restar 2 para que empiece en columna 1 (3-2=1, 4-2=2, etc.)
+  d.style.gridColumn = el.x - 2;
+  d.dataset.z = el.z;
+  d.dataset.group = el.group;
+  d.dataset.period = 6; // Lanthanides are in period 6
+  d.innerHTML = `<div style="display:flex;justify-content:space-between"><div class='num'>${el.z}</div></div><div style="text-align:center;margin-top:4px"><div class='sym'>${el.sym}</div><div class='ename'>${el.name}</div></div>`;
+  
+  // MODIFICADO: Add mouse events for highlighting ONLY period (not group)
+  d.addEventListener('mouseenter', () => {
+    highlightGroupAndPeriod(el.x, 6, true); // Son lantánidos
+  });
+  
+  d.addEventListener('mouseleave', () => {
+    removeGroupAndPeriodHighlights();
+  });
+  
+  d.addEventListener('click', ()=> show(el,d));
+  lanthanidesContainer.appendChild(d);
+  allCells.push(d);
+});
+
+// place actinides (including Ac) - CORREGIDO: Los elementos empiezan en columna 1 del contenedor
+actinides.forEach((el, index)=>{
+  const d = document.createElement('div');
+  d.className = 'cell ' + groupClass(el.group);
+  // CORRECCIÓN: Restar 2 para que empiece en columna 1 (3-2=1, 4-2=2, etc.)
+  d.style.gridColumn = el.x - 2;
+  d.dataset.z = el.z;
+  d.dataset.group = el.group;
+  d.dataset.period = 7; // Actinides are in period 7
+  d.innerHTML = `<div style="display:flex;justify-content:space-between"><div class='num'>${el.z}</div></div><div style="text-align:center;margin-top:4px"><div class='sym'>${el.sym}</div><div class='ename'>${el.name}</div></div>`;
+  
+  // MODIFICADO: Add mouse events for highlighting ONLY period (not group)
+  d.addEventListener('mouseenter', () => {
+    highlightGroupAndPeriod(el.x, 7, true); // Son actínidos
+  });
+  
+  d.addEventListener('mouseleave', () => {
+    removeGroupAndPeriodHighlights();
+  });
+  
+  d.addEventListener('click', ()=> show(el,d));
+  actinidesContainer.appendChild(d);
+  allCells.push(d);
+});
+
+// Initialize group and period labels
+function initLabels() {
+  // Get group labels
+  const groupsContainer = document.querySelector('.groups-container');
+  groupLabels = Array.from(groupsContainer.querySelectorAll('.group-label'));
+  
+  // Get period labels
+  const periodsColumn = document.querySelector('.periods-column');
+  periodLabels = Array.from(periodsColumn.querySelectorAll('.period-label'));
+}
+
+// show info in panel - MODIFICADO: Estructura simplificada con enlace a Wikipedia CORREGIDO
+function show(el, cell){
+  const icon = document.getElementById('iconSquare');
+  const title = document.getElementById('titleMain');
+  const subtitle = document.getElementById('subtitle');
+  
+  // MODIFICADO: Crear enlace para el nombre del elemento con casos especiales
+  const elementName = el.name;
+  let wikipediaUrl;
+  
+  // Casos especiales para nombres que necesitan sufijo _(elementua)
+  if (elementName === 'Merkurio') {
+    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Merkurio_(elementua)';
+  } else if (elementName === 'Zerio') {
+    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Zerio_(elementua)';
+  } else {
+    wikipediaUrl = `https://eu.wikipedia.org/wiki/${encodeURIComponent(elementName)}`;
+  }
+  
+  // Actualizar información básica con enlace
+  title.innerHTML = `<a href="${wikipediaUrl}" target="_blank" class="element-name-link" id="elementLink">${elementName}</a>`;
+  subtitle.textContent = `Z = ${el.z}`;
+  
+  // Actualizar lista de datos importantes
+  document.getElementById('iz').textContent = el.z;
+  document.getElementById('imass').textContent = el.mass ? el.mass + ' u' : '—';
+  document.getElementById('ival').textContent = (el.val && el.val.length)? el.val.join(', '): '—';
+  document.getElementById('iconfig').textContent = el.config || '—';
+  
+  // Mostrar electronegatividad
+  const electronegDisplay = document.getElementById('ielectroneg');
+  if (el.electroneg && el.electroneg > 0) {
+    electronegDisplay.textContent = el.electroneg.toFixed(2);
+  } else {
+    electronegDisplay.textContent = 'Ezezaguna';
+  }
+  
+  // Mostrar radio atómico
+  const radiusDisplay = document.getElementById('iradius');
+  if (el.radius && el.radius > 0) {
+    radiusDisplay.textContent = el.radius + ' pm';
+  } else {
+    radiusDisplay.textContent = 'Ezezaguna';
+  }
+  
+  // Mostrar ionizazio energia
+  const ionizationDisplay = document.getElementById('iionization');
+  if (el.ionization && el.ionization > 0) {
+    ionizationDisplay.textContent = el.ionization + ' kJ/mol';
+  } else {
+    ionizationDisplay.textContent = 'Ezezaguna';
+  }
+  
+  // set icon square color same as cell
+  const style = window.getComputedStyle(cell);
+  icon.style.background = style.backgroundColor || '#f1f5f9';
+  icon.textContent = el.sym;
+}
+
+// Para abrir en la misma pestaña
+btn3D.addEventListener('click', () => {
+  window.location.href = 'Orbitalak/';
+});
+
+btnBalents.addEventListener('click', () => {
+  window.location.href = 'BalentzienTaula/';
+});
+
+btnCompounds.addEventListener('click', () => {
+  window.location.href = 'KonposatuInorganiko/';
+});
+
+btnCalc.addEventListener('click', () => {
+  window.location.href = 'Kalkulagailu/';
+});
+
+// initialize
 initLabels();
 show(elements[0], document.querySelector('.cell'));
 updateZoom();
 toggleTrendArrows(false);
+
+// [RESTO DEL CÓDIGO JAVASCRIPT PARA FUNCIONALIDADES ADICIONALES...]
+// Search functionality
+searchInput.addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase().trim();
+  
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element;
+    
+    // Find the element in the appropriate dataset
+    if (z >= 57 && z <= 71) {
+      element = lanthanides.find(el => el.z === z);
+    } else if (z >= 89 && z <= 103) {
+      element = actinides.find(el => el.z === z);
+    } else {
+      element = elements.find(el => el.z === z);
+    }
+    
+    if (element) {
+      const matches = element.name.toLowerCase().includes(searchTerm) ||
+                     element.sym.toLowerCase().includes(searchTerm) ||
+                     element.z.toString().includes(searchTerm);
+      
+      // Remove previous search classes
+      cell.classList.remove('search-match', 'search-nomatch');
+      
+      if (searchTerm === '') {
+        // No search term - show all normally
+        cell.style.opacity = '';
+        cell.style.filter = '';
+        cell.style.transform = '';
+        cell.style.border = '';
+      } else if (matches) {
+        // Match found - highlight it
+        cell.classList.add('search-match');
+      } else {
+        // No match - dim it
+        cell.classList.add('search-nomatch');
+      }
+    }
+  });
+});
+
+// Zoom functionality
+let zoomLevel = 1;
+const minZoom = 0.5;
+const maxZoom = 2;
+const zoomStep = 0.05;
+
+function updateZoom() {
+  document.documentElement.style.setProperty('--zoom-level', zoomLevel);
+  document.getElementById('zoomLevel').textContent = Math.round(zoomLevel * 100) + '%';
+}
+
+document.getElementById('zoomIn').addEventListener('click', () => {
+  if (zoomLevel < maxZoom) {
+    zoomLevel += zoomStep;
+    updateZoom();
+  }
+});
+
+document.getElementById('zoomOut').addEventListener('click', () => {
+  if (zoomLevel > minZoom) {
+    zoomLevel -= zoomStep;
+    updateZoom();
+  }
+});
+
+document.getElementById('zoomReset').addEventListener('click', () => {
+  zoomLevel = 1;
+  updateZoom();
+});
 </script>
 <script>
 /* ---------- ZOOM + AUTO-FIT JUNTOS ---------- */
