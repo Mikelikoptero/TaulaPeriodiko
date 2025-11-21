@@ -1368,6 +1368,8 @@ const actinides = [
  {z:103,sym:'Lr',name:'Lawrentzio',mass:266,val:[3],config:'[Rn] 7s² 5f¹⁴ 6d¹',group:'actinide',x:17,radius:0,electroneg:0,ionization:470}
 ];
 
+// [MANTÉN TODAS LAS DEFINICIONES DE ELEMENTS, LANTHANIDES, ACTINIDES...]
+
 const table = document.getElementById('table');
 const lanthanidesContainer = document.getElementById('lanthanides');
 const actinidesContainer = document.getElementById('actinides');
@@ -1386,17 +1388,11 @@ const radiusTitle = document.querySelector('.radius-legend-title');
 const electronegTitle = document.querySelector('.electroneg-legend-title');
 const ionizationTitle = document.querySelector('.ionization-legend-title');
 
-// Referencias para el botón 3D
+// Referencias para los botones
 const btn3D = document.getElementById('btn3D');
-
-// Referencia para el botón Balentziak
 const btnBalents = document.getElementById('btnBalents');
-
-// Referencias para los nuevos botones
 const btnCompounds = document.getElementById('btnCompounds');
 const btnCalc = document.getElementById('btnCalc');
-
-// Referencia para el menú retráctil de recursos
 const resourcesToggle = document.getElementById('resourcesToggle');
 
 // Store all cell elements for highlighting
@@ -1407,9 +1403,7 @@ let isElecConfigMode = false;
 let isElectronegMode = false;
 let isRadiusMode = false;
 let isIonizationMode = false;
-// Función para obtener el color real del grupo de un elemento
 
-// [RESTO DEL CÓDIGO JAVASCRIPT IGUAL QUE ANTES]
 // Función para mostrar/ocultar las flechas de tendencia
 function toggleTrendArrows(show, type) {
   const allArrows = trendArrows.querySelectorAll('.trend-arrow');
@@ -1467,8 +1461,206 @@ resourcesToggle.addEventListener('click', function(e) {
   }
 });
 
-// AQUÍ EMPIEZA LA PARTE IMPORTANTE - CREACIÓN DE ELEMENTOS EN LA TABLA
+// TOGGLE FUNCTIONALITY - ORBITALES ATÓMICOS
+elecToggleBtn.addEventListener('click', function() {
+  isElecConfigMode = !isElecConfigMode;
+  
+  if (isElecConfigMode) {
+    this.classList.add('active');
+    elecLegend.classList.add('active');
+    applyElectronBlockColors();
+  } else {
+    this.classList.remove('active');
+    elecLegend.classList.remove('active');
+    removeElectronBlockColors();
+  }
+});
 
+function applyElectronBlockColors() {
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element;
+    
+    if (z >= 57 && z <= 71) {
+      element = lanthanides.find(el => el.z === z);
+    } else if (z >= 89 && z <= 103) {
+      element = actinides.find(el => el.z === z);
+    } else {
+      element = elements.find(el => el.z === z);
+    }
+    
+    if (element) {
+      const config = element.config;
+      if (config) {
+        if (config.includes('s¹') || config.includes('s²')) {
+          cell.classList.add('s-block');
+        } else if (config.includes('p¹') || config.includes('p²') || config.includes('p³') || 
+                   config.includes('p⁴') || config.includes('p⁵') || config.includes('p⁶')) {
+          cell.classList.add('p-block');
+        } else if (config.includes('d¹') || config.includes('d²') || config.includes('d³') || 
+                   config.includes('d⁴') || config.includes('d⁵') || config.includes('d⁶') || 
+                   config.includes('d⁷') || config.includes('d⁸') || config.includes('d⁹') || config.includes('d¹⁰')) {
+          cell.classList.add('d-block');
+        } else if (config.includes('f¹') || config.includes('f²') || config.includes('f³') || 
+                   config.includes('f⁴') || config.includes('f⁵') || config.includes('f⁶') || 
+                   config.includes('f⁷') || config.includes('f⁸') || config.includes('f⁹') || 
+                   config.includes('f¹⁰') || config.includes('f¹¹') || config.includes('f¹²') || 
+                   config.includes('f¹³') || config.includes('f¹⁴')) {
+          cell.classList.add('f-block');
+        }
+      }
+    }
+  });
+}
+
+function removeElectronBlockColors() {
+  allCells.forEach(cell => {
+    cell.classList.remove('s-block', 'p-block', 'd-block', 'f-block');
+  });
+}
+
+// TOGGLE FUNCTIONALITY - ELETRONEGATIVIDAD
+electronegToggleBtn.addEventListener('click', function() {
+  isElectronegMode = !isElectronegMode;
+  
+  if (isElectronegMode) {
+    this.classList.add('active');
+    electronegLegend.classList.add('active');
+    applyElectronegativityColors();
+  } else {
+    this.classList.remove('active');
+    electronegLegend.classList.remove('active');
+    removePropertyColors('electroneg');
+  }
+});
+
+function applyElectronegativityColors() {
+  // Encontrar valores mínimo y máximo de electronegatividad
+  let minElectroneg = Infinity;
+  let maxElectroneg = -Infinity;
+  
+  const allElements = [...elements, ...lanthanides, ...actinides];
+  allElements.forEach(el => {
+    if (el.electroneg && el.electroneg > 0) {
+      minElectroneg = Math.min(minElectroneg, el.electroneg);
+      maxElectroneg = Math.max(maxElectroneg, el.electroneg);
+    }
+  });
+  
+  // Aplicar colores basados en la electronegatividad
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element = allElements.find(el => el.z === z);
+    
+    if (element && element.electroneg && element.electroneg > 0) {
+      const normalized = (element.electroneg - minElectroneg) / (maxElectroneg - minElectroneg);
+      const intensity = Math.floor(normalized * 100);
+      cell.style.background = `hsl(210, 70%, ${85 - intensity * 0.4}%)`;
+      cell.classList.add('electronegativity');
+    } else {
+      cell.classList.add('unknown-electroneg');
+    }
+  });
+}
+
+// TOGGLE FUNCTIONALITY - RADIO ATÓMICO
+radiusToggleBtn.addEventListener('click', function() {
+  isRadiusMode = !isRadiusMode;
+  
+  if (isRadiusMode) {
+    this.classList.add('active');
+    radiusLegend.classList.add('active');
+    applyAtomicRadiusColors();
+  } else {
+    this.classList.remove('active');
+    radiusLegend.classList.remove('active');
+    removePropertyColors('radius');
+  }
+});
+
+function applyAtomicRadiusColors() {
+  // Encontrar valores mínimo y máximo de radio atómico
+  let minRadius = Infinity;
+  let maxRadius = -Infinity;
+  
+  const allElements = [...elements, ...lanthanides, ...actinides];
+  allElements.forEach(el => {
+    if (el.radius && el.radius > 0) {
+      minRadius = Math.min(minRadius, el.radius);
+      maxRadius = Math.max(maxRadius, el.radius);
+    }
+  });
+  
+  // Aplicar colores basados en el radio atómico
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element = allElements.find(el => el.z === z);
+    
+    if (element && element.radius && element.radius > 0) {
+      const normalized = (element.radius - minRadius) / (maxRadius - minRadius);
+      const intensity = Math.floor(normalized * 100);
+      cell.style.background = `hsl(120, 70%, ${85 - intensity * 0.4}%)`;
+      cell.classList.add('atomic-radius');
+    } else {
+      cell.classList.add('unknown-radius');
+    }
+  });
+}
+
+// TOGGLE FUNCTIONALITY - ENERGÍA DE IONIZACIÓN
+ionizationToggleBtn.addEventListener('click', function() {
+  isIonizationMode = !isIonizationMode;
+  
+  if (isIonizationMode) {
+    this.classList.add('active');
+    ionizationLegend.classList.add('active');
+    applyIonizationEnergyColors();
+  } else {
+    this.classList.remove('active');
+    ionizationLegend.classList.remove('active');
+    removePropertyColors('ionization');
+  }
+});
+
+function applyIonizationEnergyColors() {
+  // Encontrar valores mínimo y máximo de energía de ionización
+  let minIonization = Infinity;
+  let maxIonization = -Infinity;
+  
+  const allElements = [...elements, ...lanthanides, ...actinides];
+  allElements.forEach(el => {
+    if (el.ionization && el.ionization > 0) {
+      minIonization = Math.min(minIonization, el.ionization);
+      maxIonization = Math.max(maxIonization, el.ionization);
+    }
+  });
+  
+  // Aplicar colores basados en la energía de ionización
+  allCells.forEach(cell => {
+    const z = parseInt(cell.dataset.z);
+    let element = allElements.find(el => el.z === z);
+    
+    if (element && element.ionization && element.ionization > 0) {
+      const normalized = (element.ionization - minIonization) / (maxIonization - minIonization);
+      const intensity = Math.floor(normalized * 100);
+      cell.style.background = `hsl(0, 70%, ${85 - intensity * 0.4}%)`;
+      cell.classList.add('ionization-energy');
+    } else {
+      cell.classList.add('unknown-ionization');
+    }
+  });
+}
+
+// Función para remover colores de propiedades
+function removePropertyColors(property) {
+  allCells.forEach(cell => {
+    cell.classList.remove('atomic-radius', 'electronegativity', 'ionization-energy');
+    cell.classList.remove('unknown-radius', 'unknown-electroneg', 'unknown-ionization');
+    cell.style.background = '';
+  });
+}
+
+// [MANTÉN EL RESTO DEL CÓDIGO PARA CREAR LA TABLA, LEGEND, ETC...]
 // create grid placeholders to preserve spacing
 for(let r=1;r<=7;r++){
   for(let c=1;c<=18;c++){
@@ -1602,8 +1794,6 @@ function removeGroupAndPeriodHighlights() {
   periodLabels.forEach(label => label.classList.remove('highlighted'));
 }
 
-// AQUÍ ESTÁ LA PARTE CLAVE - CREACIÓN Y AÑADIDO DE ELEMENTOS A LA TABLA
-
 // place main table elements
 elements.forEach(el=>{
   const d = document.createElement('div');
@@ -1617,7 +1807,7 @@ elements.forEach(el=>{
   
   // Add mouse events for highlighting group and period
   d.addEventListener('mouseenter', () => {
-    highlightGroupAndPeriod(el.x, el.y, false); // No son lantánidos/actínidos
+    highlightGroupAndPeriod(el.x, el.y, false);
   });
   
   d.addEventListener('mouseleave', () => {
@@ -1632,20 +1822,18 @@ elements.forEach(el=>{
 // Create table legend
 createTableLegend();
 
-// place lanthanides (including La) - CORREGIDO: Los elementos empiezan en columna 1 del contenedor
+// place lanthanides (including La)
 lanthanides.forEach((el, index)=>{
   const d = document.createElement('div');
   d.className = 'cell ' + groupClass(el.group);
-  // CORRECCIÓN: Restar 2 para que empiece en columna 1 (3-2=1, 4-2=2, etc.)
   d.style.gridColumn = el.x - 2;
   d.dataset.z = el.z;
   d.dataset.group = el.group;
-  d.dataset.period = 6; // Lanthanides are in period 6
+  d.dataset.period = 6;
   d.innerHTML = `<div style="display:flex;justify-content:space-between"><div class='num'>${el.z}</div></div><div style="text-align:center;margin-top:4px"><div class='sym'>${el.sym}</div><div class='ename'>${el.name}</div></div>`;
   
-  // MODIFICADO: Add mouse events for highlighting ONLY period (not group)
   d.addEventListener('mouseenter', () => {
-    highlightGroupAndPeriod(el.x, 6, true); // Son lantánidos
+    highlightGroupAndPeriod(el.x, 6, true);
   });
   
   d.addEventListener('mouseleave', () => {
@@ -1657,20 +1845,18 @@ lanthanides.forEach((el, index)=>{
   allCells.push(d);
 });
 
-// place actinides (including Ac) - CORREGIDO: Los elementos empiezan en columna 1 del contenedor
+// place actinides (including Ac)
 actinides.forEach((el, index)=>{
   const d = document.createElement('div');
   d.className = 'cell ' + groupClass(el.group);
-  // CORRECCIÓN: Restar 2 para que empiece en columna 1 (3-2=1, 4-2=2, etc.)
   d.style.gridColumn = el.x - 2;
   d.dataset.z = el.z;
   d.dataset.group = el.group;
-  d.dataset.period = 7; // Actinides are in period 7
+  d.dataset.period = 7;
   d.innerHTML = `<div style="display:flex;justify-content:space-between"><div class='num'>${el.z}</div></div><div style="text-align:center;margin-top:4px"><div class='sym'>${el.sym}</div><div class='ename'>${el.name}</div></div>`;
   
-  // MODIFICADO: Add mouse events for highlighting ONLY period (not group)
   d.addEventListener('mouseenter', () => {
-    highlightGroupAndPeriod(el.x, 7, true); // Son actínidos
+    highlightGroupAndPeriod(el.x, 7, true);
   });
   
   d.addEventListener('mouseleave', () => {
@@ -1684,26 +1870,22 @@ actinides.forEach((el, index)=>{
 
 // Initialize group and period labels
 function initLabels() {
-  // Get group labels
   const groupsContainer = document.querySelector('.groups-container');
   groupLabels = Array.from(groupsContainer.querySelectorAll('.group-label'));
   
-  // Get period labels
   const periodsColumn = document.querySelector('.periods-column');
   periodLabels = Array.from(periodsColumn.querySelectorAll('.period-label'));
 }
 
-// show info in panel - MODIFICADO: Estructura simplificada con enlace a Wikipedia CORREGIDO
+// show info in panel
 function show(el, cell){
   const icon = document.getElementById('iconSquare');
   const title = document.getElementById('titleMain');
   const subtitle = document.getElementById('subtitle');
   
-  // MODIFICADO: Crear enlace para el nombre del elemento con casos especiales
   const elementName = el.name;
   let wikipediaUrl;
   
-  // Casos especiales para nombres que necesitan sufijo _(elementua)
   if (elementName === 'Merkurio') {
     wikipediaUrl = 'https://eu.wikipedia.org/wiki/Merkurio_(elementua)';
   } else if (elementName === 'Zerio') {
@@ -1712,17 +1894,14 @@ function show(el, cell){
     wikipediaUrl = `https://eu.wikipedia.org/wiki/${encodeURIComponent(elementName)}`;
   }
   
-  // Actualizar información básica con enlace
   title.innerHTML = `<a href="${wikipediaUrl}" target="_blank" class="element-name-link" id="elementLink">${elementName}</a>`;
   subtitle.textContent = `Z = ${el.z}`;
   
-  // Actualizar lista de datos importantes
   document.getElementById('iz').textContent = el.z;
   document.getElementById('imass').textContent = el.mass ? el.mass + ' u' : '—';
   document.getElementById('ival').textContent = (el.val && el.val.length)? el.val.join(', '): '—';
   document.getElementById('iconfig').textContent = el.config || '—';
   
-  // Mostrar electronegatividad
   const electronegDisplay = document.getElementById('ielectroneg');
   if (el.electroneg && el.electroneg > 0) {
     electronegDisplay.textContent = el.electroneg.toFixed(2);
@@ -1730,7 +1909,6 @@ function show(el, cell){
     electronegDisplay.textContent = 'Ezezaguna';
   }
   
-  // Mostrar radio atómico
   const radiusDisplay = document.getElementById('iradius');
   if (el.radius && el.radius > 0) {
     radiusDisplay.textContent = el.radius + ' pm';
@@ -1738,7 +1916,6 @@ function show(el, cell){
     radiusDisplay.textContent = 'Ezezaguna';
   }
   
-  // Mostrar ionizazio energia
   const ionizationDisplay = document.getElementById('iionization');
   if (el.ionization && el.ionization > 0) {
     ionizationDisplay.textContent = el.ionization + ' kJ/mol';
@@ -1746,33 +1923,28 @@ function show(el, cell){
     ionizationDisplay.textContent = 'Ezezaguna';
   }
   
-  // CORREGIDO: Mantener el color del grupo en lugar de forzar blanco
-  // CORREGIDO: Obtener el color real del grupo, no el color hover
-const computedStyle = window.getComputedStyle(cell);
-let bgColor = computedStyle.backgroundColor;
+  const computedStyle = window.getComputedStyle(cell);
+  let bgColor = computedStyle.backgroundColor;
 
-// Si el color es blanco (por hover), obtener el color del grupo de los datos
-if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor.includes('255, 255, 255')) {
-  // Obtener el color del grupo basado en la clase
-  const groupClasses = cell.className.split(' ');
-  for (let className of groupClasses) {
-    if (className.includes('block') || ['alkali', 'alkaline', 'transition', 'post-transition', 'metalloid', 'nonmetal', 'halogen', 'noble', 'lanthanide', 'actinide'].includes(className)) {
-      // Crear un elemento temporal para obtener el color real del grupo
-      const tempDiv = document.createElement('div');
-      tempDiv.className = 'cell ' + className;
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.visibility = 'hidden';
-      document.body.appendChild(tempDiv);
-      const tempStyle = window.getComputedStyle(tempDiv);
-      bgColor = tempStyle.backgroundColor;
-      document.body.removeChild(tempDiv);
-      break;
+  if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor.includes('255, 255, 255')) {
+    const groupClasses = cell.className.split(' ');
+    for (let className of groupClasses) {
+      if (className.includes('block') || ['alkali', 'alkaline', 'transition', 'post-transition', 'metalloid', 'nonmetal', 'halogen', 'noble', 'lanthanide', 'actinide'].includes(className)) {
+        const tempDiv = document.createElement('div');
+        tempDiv.className = 'cell ' + className;
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.visibility = 'hidden';
+        document.body.appendChild(tempDiv);
+        const tempStyle = window.getComputedStyle(tempDiv);
+        bgColor = tempStyle.backgroundColor;
+        document.body.removeChild(tempDiv);
+        break;
+      }
     }
   }
-}
 
-icon.style.background = bgColor;
-icon.textContent = el.sym;
+  icon.style.background = bgColor;
+  icon.textContent = el.sym;
 }
 
 // Para abrir en la misma pestaña
@@ -1792,9 +1964,6 @@ btnCalc.addEventListener('click', () => {
   window.location.href = 'Kalkulagailu/';
 });
 
-
-
-// [RESTO DEL CÓDIGO JAVASCRIPT PARA FUNCIONALIDADES ADICIONALES...]
 // Search functionality
 searchInput.addEventListener('input', function() {
   const searchTerm = this.value.toLowerCase().trim();
@@ -1803,7 +1972,6 @@ searchInput.addEventListener('input', function() {
     const z = parseInt(cell.dataset.z);
     let element;
     
-    // Find the element in the appropriate dataset
     if (z >= 57 && z <= 71) {
       element = lanthanides.find(el => el.z === z);
     } else if (z >= 89 && z <= 103) {
@@ -1817,62 +1985,16 @@ searchInput.addEventListener('input', function() {
                      element.sym.toLowerCase().includes(searchTerm) ||
                      element.z.toString().includes(searchTerm);
       
-      // Remove previous search classes
       cell.classList.remove('search-match', 'search-nomatch');
       
       if (searchTerm === '') {
-        // No search term - show all normally
         cell.style.opacity = '';
         cell.style.filter = '';
         cell.style.transform = '';
         cell.style.border = '';
       } else if (matches) {
-        // Match found - highlight it
         cell.classList.add('search-match');
       } else {
-        // No match - dim it
-        cell.classList.add('search-nomatch');
-      }
-    }
-  });
-});
-
-// Search functionality
-searchInput.addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase().trim();
-  
-  allCells.forEach(cell => {
-    const z = parseInt(cell.dataset.z);
-    let element;
-    
-    // Find the element in the appropriate dataset
-    if (z >= 57 && z <= 71) {
-      element = lanthanides.find(el => el.z === z);
-    } else if (z >= 89 && z <= 103) {
-      element = actinides.find(el => el.z === z);
-    } else {
-      element = elements.find(el => el.z === z);
-    }
-    
-    if (element) {
-      const matches = element.name.toLowerCase().includes(searchTerm) ||
-                     element.sym.toLowerCase().includes(searchTerm) ||
-                     element.z.toString().includes(searchTerm);
-      
-      // Remove previous search classes
-      cell.classList.remove('search-match', 'search-nomatch');
-      
-      if (searchTerm === '') {
-        // No search term - show all normally
-        cell.style.opacity = '';
-        cell.style.filter = '';
-        cell.style.transform = '';
-        cell.style.border = '';
-      } else if (matches) {
-        // Match found - highlight it
-        cell.classList.add('search-match');
-      } else {
-        // No match - dim it
         cell.classList.add('search-nomatch');
       }
     }
@@ -1926,6 +2048,7 @@ toggleTrendArrows(false);
 </script> 
 </body>
 </html>
+
 
 
 
