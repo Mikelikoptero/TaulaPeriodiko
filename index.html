@@ -764,7 +764,8 @@ body{margin:0;font-family:'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-seri
   transform:translateY(-3px) scale(1.03);
   box-shadow:var(--shadow-medium);
   border-color:var(--primary-green);
-  background:var(--bg-white);
+  filter: brightness(1.15) saturate(1.2); /* Aclara el color original sin volverlo blanco */
+  background: inherit; /* Mantiene el color del grupo */
 }
 .cell.dimmed{opacity:0.4;transform:scale(0.95);filter:grayscale(0.5)}
 .cell.highlighted{
@@ -1406,6 +1407,7 @@ let isElecConfigMode = false;
 let isElectronegMode = false;
 let isRadiusMode = false;
 let isIonizationMode = false;
+// Función para obtener el color real del grupo de un elemento
 
 // [RESTO DEL CÓDIGO JAVASCRIPT IGUAL QUE ANTES]
 // Función para mostrar/ocultar las flechas de tendencia
@@ -1745,10 +1747,32 @@ function show(el, cell){
   }
   
   // CORREGIDO: Mantener el color del grupo en lugar de forzar blanco
-  const style = window.getComputedStyle(cell);
-  icon.style.background = style.backgroundColor || '#f1f5f9';
-  icon.style.backgroundColor = style.backgroundColor || '#f1f5f9'; // Asegurar que se aplique
-  icon.textContent = el.sym;
+  // CORREGIDO: Obtener el color real del grupo, no el color hover
+const computedStyle = window.getComputedStyle(cell);
+let bgColor = computedStyle.backgroundColor;
+
+// Si el color es blanco (por hover), obtener el color del grupo de los datos
+if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor.includes('255, 255, 255')) {
+  // Obtener el color del grupo basado en la clase
+  const groupClasses = cell.className.split(' ');
+  for (let className of groupClasses) {
+    if (className.includes('block') || ['alkali', 'alkaline', 'transition', 'post-transition', 'metalloid', 'nonmetal', 'halogen', 'noble', 'lanthanide', 'actinide'].includes(className)) {
+      // Crear un elemento temporal para obtener el color real del grupo
+      const tempDiv = document.createElement('div');
+      tempDiv.className = 'cell ' + className;
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.visibility = 'hidden';
+      document.body.appendChild(tempDiv);
+      const tempStyle = window.getComputedStyle(tempDiv);
+      bgColor = tempStyle.backgroundColor;
+      document.body.removeChild(tempDiv);
+      break;
+    }
+  }
+}
+
+icon.style.background = bgColor;
+icon.textContent = el.sym;
 }
 
 // Para abrir en la misma pestaña
@@ -1890,6 +1914,7 @@ window.addEventListener('resize', applyZoom);
 </script> 
 </body>
 </html>
+
 
 
 
