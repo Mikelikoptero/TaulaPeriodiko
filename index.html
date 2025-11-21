@@ -1744,9 +1744,10 @@ function show(el, cell){
     ionizationDisplay.textContent = 'Ezezaguna';
   }
   
-  // set icon square color same as cell
+  // CORREGIDO: Mantener el color del grupo en lugar de forzar blanco
   const style = window.getComputedStyle(cell);
   icon.style.background = style.backgroundColor || '#f1f5f9';
+  icon.style.backgroundColor = style.backgroundColor || '#f1f5f9'; // Asegurar que se aplique
   icon.textContent = el.sym;
 }
 
@@ -1889,6 +1890,7 @@ window.addEventListener('resize', applyZoom);
 </script> 
 </body>
 </html>
+
 
 
 
