@@ -2450,24 +2450,21 @@ function show(el, cell){
   icon.textContent = el.sym;
 }
 
-// Event listener para el botón 3D - SIMPLIFICADO: Redirige a la web externa
+// Para abrir en la misma pestaña
 btn3D.addEventListener('click', () => {
-  window.open('https://mikelikoptero.github.io/Orbitalak3D/ ', '_blank');
+  window.location.href = 'Orbitalak/';
 });
 
-// Event listener para el botón Balentziak
 btnBalents.addEventListener('click', () => {
-  window.open('https://mikelikoptero.github.io/Balentzien-Taula/ ', '_blank');
+  window.location.href = 'BalentzienTaula/';
 });
 
-// NUEVO: Event listener para el botón Konposatu Inorganikoak
 btnCompounds.addEventListener('click', () => {
-  window.open('https://mikelikoptero.github.io/KonposatuInorganikoak/ ', '_blank');
+  window.location.href = 'KonposatuInorganiko/';
 });
 
-// NUEVO: Event listener para el botón Kalkulu Tresnak
 btnCalc.addEventListener('click', () => {
-  window.open('https://mikelikoptero.github.io/Kalkulagailua/ ', '_blank');
+  window.location.href = 'Kalkulagailu/';
 });
 
 // initialize
@@ -2522,3 +2519,4 @@ window.addEventListener('resize', applyZoom);
 </script> 
 </body>
 </html>
+
