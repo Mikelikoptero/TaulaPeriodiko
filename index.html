@@ -9,7 +9,7 @@
 <style>
 @font-face {
   font-family: 'Arista 2.0 Alternate';
-  src: url('https://raw.githubusercontent.com/Mikelikoptero/Taularako-argazkiak/main/AristaAlternate/Arista2.0Alternate.ttf ') format('truetype');
+  src: url('https://raw.githubusercontent.com/Mikelikoptero/Taularako-argazkiak/main/AristaAlternate/Arista2.0Alternate.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -22,20 +22,29 @@
   --gap-size: 6px;
   --bg:#0a0a0a; /* Negro puro */
   --zoom-level: 0.75;
+  --primary-green: #3A795E;
+  --secondary-green: #4A896E;
+  --text-light: #e6e6e6;
+  --text-medium: #cccccc;
+  --text-dark: #333333;
+  --bg-light: #111111;
+  --bg-medium: #151515;
+  --border-green: rgba(58,121,94,0.3);
+  --hover-green: rgba(58,121,94,0.4);
 }
 
 *{box-sizing:border-box}
-body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;background:var(--bg);color:#e6e6e6;overflow:hidden}
+body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;background:var(--bg);color:var(--text-light);overflow:hidden}
 .app{display:flex;height:100vh;width:100vw}
 /* left panel */
-.panel{width:var(--panel-width);min-width:var(--panel-width);background:linear-gradient(180deg,#0a0a0a,#111111);padding:20px;border-right:1px solid rgba(58,121,94,0.3);overflow:auto;flex-shrink:0}
+.panel{width:var(--panel-width);min-width:var(--panel-width);background:linear-gradient(180deg,var(--bg),var(--bg-light));padding:20px;border-right:1px solid var(--border-green);overflow:auto;flex-shrink:0}
 
 /* Título ONDDI AKADEMIA - CON FUENTE ARISTA 2.0 ALTERNATE */
 .onddi-title {
   font-family: 'Arista 2.0 Alternate', sans-serif;
   font-size: 32px;
   font-weight: 700;
-  color: #3A795E;
+  color: var(--primary-green);
   text-align: center;
   margin: 0 0 25px 0;
   padding: 0;
@@ -43,26 +52,26 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   width: 100%;
 }
 
-.panel h1{margin:0 0 8px 0;font-size:18px;color:#e6e6e6}
-.panel p{margin:0 0 14px 0;opacity:0.8;color:#cccccc}
-.card{background:linear-gradient(180deg,#111111,#0d0d0d);padding:14px;border-radius:8px;border:1px solid rgba(58,121,94,0.2)}
-.big-square{width:84px;height:84px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:40px;margin-right:14px;color:#000 !important}
+.panel h1{margin:0 0 8px 0;font-size:18px;color:var(--text-light)}
+.panel p{margin:0 0 14px 0;opacity:0.8;color:var(--text-medium)}
+.card{background:linear-gradient(180deg,var(--bg-light),#0d0d0d);padding:14px;border-radius:8px;border:1px solid var(--border-green)}
+.big-square{width:84px;height:84px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:40px;margin-right:14px;color:var(--text-dark) !important}
 .info-head{display:flex;align-items:center;justify-content:space-between}
 .info-left{display:flex;align-items:center}
 .info-rows{margin-top:12px}
 .info-rows div{margin:8px 0}
 /* MODIFICADO: Aumentar el ancho de las etiquetas para que quepa "Ionizazio Energia" */
-.info-rows b{display:inline-block;width:170px;color:#cccccc}
-.small-muted{font-size:12px;opacity:0.8;color:#aaaaaa}
+.info-rows b{display:inline-block;width:170px;color:var(--text-medium)}
+.small-muted{font-size:12px;opacity:0.8;color:var(--text-medium)}
 .footer{margin-top:12px;font-size:12px;opacity:0.7;color:#888888}
 
 /* NUEVO: Menú retráctil Baliabideak */
 .resources-toggle {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -80,13 +89,13 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .resources-title {
   font-size: 16px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
 .resources-icon {
   transition: transform 0.3s ease;
-  color: #3A795E;
+  color: var(--primary-green);
   font-weight: bold;
 }
 
@@ -113,11 +122,11 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 /* Leyenda para bloques electrónicos - MODIFICADA: Con botón de toggle integrado */
 .elec-legend {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -133,17 +142,17 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .elec-legend-title {
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
 /* NUEVO: Pestaña retráctil para propiedades */
 .properties-toggle {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -161,13 +170,13 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .properties-title {
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
 .properties-icon {
   transition: transform 0.3s ease;
-  color: #3A795E;
+  color: var(--primary-green);
   font-weight: bold;
 }
 
@@ -194,10 +203,10 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 /* Leyenda para electronegatividad */
 .electroneg-legend {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -219,7 +228,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   cursor: help;
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
@@ -227,9 +236,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: rgba(58,121,94,0.15);
-  border: 1px solid rgba(58,121,94,0.3);
-  color: #cccccc;
+  background: var(--border-green);
+  border: 1px solid var(--primary-green);
+  color: var(--text-medium);
   font-size: 11px;
   font-weight: bold;
   display: flex;
@@ -240,9 +249,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .electroneg-legend-title:hover .title-tooltip {
-  background: rgba(58,121,94,0.3);
-  border-color: rgba(58,121,94,0.5);
-  color: #e6e6e6;
+  background: var(--hover-green);
+  border-color: var(--secondary-green);
+  color: var(--text-light);
   transform: scale(1.1);
 }
 
@@ -251,12 +260,12 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   top: 100%;
   left: 0;
   background: linear-gradient(180deg, #1a1a1a, #252525);
-  border: 1px solid rgba(58,121,94,0.4);
+  border: 1px solid var(--primary-green);
   border-radius: 6px;
   padding: 8px 10px;
   font-size: 11px;
   line-height: 1.3;
-  color: #e6e6e6;
+  color: var(--text-light);
   /* MODIFICADO: Ancho aumentado para que quepan los títulos en una línea */
   width: 200px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
@@ -275,7 +284,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .tooltip-content strong {
-  color: #98FB98;
+  color: var(--secondary-green);
   display: block;
   margin-bottom: 3px;
   font-size: 11px;
@@ -289,7 +298,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   justify-content: space-between;
   margin-top: 8px;
   font-size: 11px;
-  color: #cccccc;
+  color: var(--text-medium);
 }
 
 .electroneg-gradient-bar {
@@ -302,10 +311,10 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 /* Leyenda para radio atómico */
 .radius-legend {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -327,14 +336,14 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   cursor: help;
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
 .radius-legend-title:hover .title-tooltip {
-  background: rgba(58,121,94,0.3);
-  border-color: rgba(58,121,94,0.5);
-  color: #e6e6e6;
+  background: var(--hover-green);
+  border-color: var(--secondary-green);
+  color: var(--text-light);
   transform: scale(1.1);
 }
 
@@ -350,7 +359,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   justify-content: space-between;
   margin-top: 8px;
   font-size: 11px;
-  color: #cccccc;
+  color: var(--text-medium);
 }
 
 .radius-gradient-bar {
@@ -361,12 +370,12 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   margin: 0 8px;
 }
 
-/* NUEVO: Leyenda para Ionizazio Energia */
+/* Leyenda para Ionizazio Energia */
 .ionization-legend {
-  background: rgba(58,121,94,0.08);
+  background: var(--border-green);
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid rgba(58,121,94,0.2);
+  border: 1px solid var(--border-green);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -388,14 +397,14 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   cursor: help;
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   margin: 0;
 }
 
 .ionization-legend-title:hover .title-tooltip {
-  background: rgba(58,121,94,0.3);
-  border-color: rgba(58,121,94,0.5);
-  color: #e6e6e6;
+  background: var(--hover-green);
+  border-color: var(--secondary-green);
+  color: var(--text-light);
   transform: scale(1.1);
 }
 
@@ -411,7 +420,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   justify-content: space-between;
   margin-top: 8px;
   font-size: 11px;
-  color: #cccccc;
+  color: var(--text-medium);
 }
 
 .ionization-gradient-bar {
@@ -426,7 +435,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .elec-toggle-btn, .radius-toggle-btn, .electroneg-toggle-btn, .ionization-toggle-btn {
   width: 44px;
   height: 24px;
-  background: rgba(58,121,94,0.3);
+  background: var(--border-green);
   border-radius: 12px;
   border: none;
   position: relative;
@@ -440,7 +449,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   position: absolute;
   width: 18px;
   height: 18px;
-  background: #e6e6e6;
+  background: var(--text-light);
   border-radius: 50%;
   top: 3px;
   left: 3px;
@@ -448,7 +457,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .elec-toggle-btn.active, .radius-toggle-btn.active, .electroneg-toggle-btn.active, .ionization-toggle-btn.active {
-  background: #3A795E;
+  background: var(--primary-green);
 }
 
 .elec-toggle-btn.active::before, .radius-toggle-btn.active::before, .electroneg-toggle-btn.active::before, .ionization-toggle-btn.active::before {
@@ -468,7 +477,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   padding: 4px 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #cccccc;
+  color: var(--text-medium);
   transition: all 0.3s ease;
 }
 
@@ -554,26 +563,26 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 /* Colores pastel para bloques electrónicos MEJORADOS */
-.s-block { background: #FFB6C1 !important; color: #333; } /* Rosa pastel */
-.p-block { background: #B19CD9 !important; color: #333; } /* Lila pastel */
-.d-block { background: #87CEEB !important; color: #333; } /* Azul cielo */
-.f-block { background: #FFDAC1 !important; color: #333; } /* Naranja pastel */
+.s-block { background: #FFB6C1 !important; color: var(--text-dark); } /* Rosa pastel */
+.p-block { background: #B19CD9 !important; color: var(--text-dark); } /* Lila pastel */
+.d-block { background: #87CEEB !important; color: var(--text-dark); } /* Azul cielo */
+.f-block { background: #FFDAC1 !important; color: var(--text-dark); } /* Naranja pastel */
 
 /* Clase para radio atómico */
 .atomic-radius { 
-  color: #333 !important; 
+  color: var(--text-dark) !important; 
   transition: all 0.3s ease;
 }
 
 /* Clase para electronegatividad */
 .electronegativity { 
-  color: #333 !important; 
+  color: var(--text-dark) !important; 
   transition: all 0.3s ease;
 }
 
 /* NUEVO: Clase para ionizazio energia */
 .ionization-energy { 
-  color: #333 !important; 
+  color: var(--text-dark) !important; 
   transition: all 0.3s ease;
 }
 
@@ -637,7 +646,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   position: absolute;
   font-size: 24px;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(152, 251, 152, 0.7);
+  text-shadow: 0 0 10px var(--secondary-green);
   animation: pulse 2s infinite;
 }
 
@@ -697,18 +706,18 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .search-box {
   width: 100%;
   padding: 14px 18px;
-  background: linear-gradient(180deg,#111111,#0d0d0d);
-  border: 1px solid rgba(58,121,94,0.3);
+  background: linear-gradient(180deg,var(--bg-light),#0d0d0d);
+  border: 1px solid var(--border-green);
   border-radius: 10px;
-  color: #e6e6e6;
+  color: var(--text-light);
   font-size: 16px;
   outline: none;
   transition: all 0.3s ease;
 }
 
 .search-box:focus {
-  border-color: rgba(58,121,94,0.6);
-  box-shadow: 0 0 15px rgba(58,121,94,0.3);
+  border-color: var(--hover-green);
+  box-shadow: 0 0 15px var(--border-green);
   transform: translateY(-2px);
 }
 
@@ -733,8 +742,8 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(204,204,204,0.8);
-  background: rgba(58,121,94,0.1);
+  color: var(--text-medium);
+  background: var(--border-green);
   border-radius: 4px;
   padding: 4px;
   min-height: 30px;
@@ -742,9 +751,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .group-label.highlighted {
-  background: rgba(58,121,94,0.3);
-  color: #e6e6e6;
-  box-shadow: 0 0 10px rgba(58,121,94,0.5);
+  background: var(--hover-green);
+  color: var(--text-light);
+  box-shadow: 0 0 10px var(--border-green);
   transform: scale(1.05);
 }
 
@@ -754,8 +763,8 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(204,204,204,0.8);
-  background: rgba(58,121,94,0.1);
+  color: var(--text-medium);
+  background: var(--border-green);
   border-radius: 4px;
   padding: 4px;
   min-width: 30px;
@@ -764,9 +773,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .period-label.highlighted {
-  background: rgba(58,121,94,0.3);
-  color: #e6e6e6;
-  box-shadow: 0 0 10px rgba(58,121,94,0.5);
+  background: var(--hover-green);
+  color: var(--text-light);
+  box-shadow: 0 0 10px var(--border-green);
   transform: scale(1.05);
 }
 
@@ -796,14 +805,14 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   gap: 8px;
   z-index: 1000;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(58,121,94,0.3);
+  border: 1px solid var(--border-green);
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .zoom-btn {
-  background: rgba(58,121,94,0.2);
+  background: var(--border-green);
   border: none;
-  color: #e6e6e6;
+  color: var(--text-light);
   width: 36px;
   height: 36px;
   border-radius: 6px;
@@ -817,12 +826,12 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .zoom-btn:hover {
-  background: rgba(58,121,94,0.4);
+  background: var(--hover-green);
   transform: scale(1.05);
 }
 
 .zoom-display {
-  color: #e6e6e6;
+  color: var(--text-light);
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -860,11 +869,11 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   grid-template-columns:repeat(18, var(--cell-size));
   grid-auto-rows:var(--cell-size);
   gap:var(--gap-size);
-  background:linear-gradient(180deg,#111111,#151515);
+  background:linear-gradient(180deg,var(--bg-light),var(--bg-medium));
   padding:14px;
   border-radius:8px;
   box-shadow:0 10px 30px rgba(0,0,0,0.8);
-  border:1px solid rgba(58,121,94,0.2);
+  border:1px solid var(--border-green);
   position: relative;
 }
 
@@ -884,11 +893,11 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   grid-template-columns:repeat(15, var(--cell-size));
   grid-auto-rows:var(--cell-size);
   gap:var(--gap-size);
-  background:linear-gradient(180deg,#111111,#151515);
+  background:linear-gradient(180deg,var(--bg-light),var(--bg-medium));
   padding:14px;
   border-radius:8px;
   box-shadow:0 10px 30px rgba(0,0,0,0.8);
-  border:1px solid rgba(58,121,94,0.2);
+  border:1px solid var(--border-green);
   /* Posición exacta donde empieza la columna 3 de la tabla principal */
   margin-left: calc(44px + 8px + (var(--cell-size) * 2) + (var(--gap-size) * 2));
   width: calc((var(--cell-size) * 15) + (var(--gap-size) * 14) + 28px);
@@ -898,12 +907,12 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   background:rgba(30,30,30,0.8);
   border-radius:6px;
   padding:6px;
-  color:#e6e6e6;
+  color:var(--text-light);
   display:flex;
   flex-direction:column;
   justify-content:space-between;
   font-size:12px;
-  border:1px solid rgba(58,121,94,0.1);
+  border:1px solid var(--border-green);
   cursor:pointer;
   transition:all 0.3s ease;
   width:var(--cell-size);
@@ -932,31 +941,31 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 .cell:hover{
   transform:translateY(-4px) scale(1.05);
-  box-shadow:0 8px 24px rgba(58,121,94,0.4);
-  border-color:rgba(58,121,94,0.3);
+  box-shadow:0 8px 24px var(--border-green);
+  border-color:var(--hover-green);
 }
 .cell.dimmed{opacity:0.3;transform:scale(0.95);filter:grayscale(0.7)}
 .cell.highlighted{
   transform:scale(1.05);
-  box-shadow:0 0 20px rgba(58,121,94,0.5);
+  box-shadow:0 0 20px var(--border-green);
   z-index:10;
-  border-color:rgba(58,121,94,0.4);
+  border-color:var(--hover-green);
 }
 .cell.search-match{
   transform:scale(1.08);
-  box-shadow:0 0 25px rgba(58,121,94,0.7);
+  box-shadow:0 0 25px var(--border-green);
   z-index:20;
-  border:2px solid #3A795E;
+  border:2px solid var(--primary-green);
 }
 .cell.search-nomatch{opacity:0.2;filter:grayscale(0.8);transform:scale(0.9)}
 .placeholder-cell{
   background:transparent;
-  border:2px dashed rgba(58,121,94,0.3);
+  border:2px dashed var(--border-green);
   border-radius:6px;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:rgba(204,204,204,0.6);
+  color:var(--text-medium);
   font-size:14px;
   font-weight:600;
   width:var(--cell-size);
@@ -964,17 +973,17 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   box-sizing:border-box;
 }
 /* categories colors - PASTEL VERSION */
-.alkali{background:#FFB6C1;color:#333}
-.alkaline{background:#FFD8B1;color:#333}
-.lanthanide{background:#C9E4DE;color:#333}
-.actinide{background:#D8BFD8;color:#333}
-.transition{background:#B0E0E6;color:#333}
-.post-transition{background:#E6E6FA;color:#333}
-.metalloid{background:#98FB98;color:#333}
-.nonmetal{background:#F0E68C;color:#333}
-.halogen{background:#FFDEAD;color:#333}
-.noble{background:#DDA0DD;color:#333}
-.other{background:#F5F5F5;color:#333}
+.alkali{background:#FFB6C1;color:var(--text-dark)}
+.alkaline{background:#FFD8B1;color:var(--text-dark)}
+.lanthanide{background:#C9E4DE;color:var(--text-dark)}
+.actinide{background:#D8BFD8;color:var(--text-dark)}
+.transition{background:#B0E0E6;color:var(--text-dark)}
+.post-transition{background:#E6E6FA;color:var(--text-dark)}
+.metalloid{background:#98FB98;color:var(--text-dark)}
+.nonmetal{background:#F0E68C;color:var(--text-dark)}
+.halogen{background:#FFDEAD;color:var(--text-dark)}
+.noble{background:#DDA0DD;color:var(--text-dark)}
+.other{background:#F5F5F5;color:var(--text-dark)}
 
 /* table legend */
 .table-legend{
@@ -985,9 +994,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   grid-template-rows:repeat(2,1fr);
   gap:6px;
   padding:10px;
-  background:rgba(58,121,94,0.08);
+  background:var(--border-green);
   border-radius:6px;
-  border:1px solid rgba(58,121,94,0.2);
+  border:1px solid var(--border-green);
   font-size:13px;
 }
 .table-legend-item{
@@ -999,7 +1008,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   border-radius:4px;
   transition:all 0.3s ease;
   font-size:13px;
-  color:#cccccc;
+  color:var(--text-medium);
 }
 .table-legend-item:hover{
   background:rgba(58,121,94,0.15);
@@ -1007,7 +1016,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 .table-legend-item.active{
   background:rgba(58,121,94,0.2);
-  box-shadow:0 0 10px rgba(58,121,94,0.3);
+  box-shadow:0 0 10px var(--border-green);
 }
 .table-legend-item .sw{
   width:16px;
@@ -1018,9 +1027,9 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 /* NUEVO: Botón 3D - MODIFICADO: Verde más claro */
 .btn-3d {
-  background: #0a0a0a !important;
-  border: 2px solid #3A795E !important; /* Verde más claro */
-  color: #cccccc !important; /* MODIFICADO: Texto en gris claro como las etiquetas de información */
+  background: var(--bg) !important;
+  border: 2px solid var(--primary-green) !important;
+  color: var(--text-medium) !important;
   padding: 10px 16px !important;
   border-radius: 8px;
   font-size: 16px;
@@ -1031,29 +1040,29 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 !important; /* Cambiado: sin margen para que estén en el menú */
+  margin: 0 !important;
   width: 100% !important;
   min-width: auto !important;
-  box-shadow: 0 2px 8px rgba(92, 184, 92, 0.2); /* Verde más claro */
+  box-shadow: 0 2px 8px rgba(58, 121, 94, 0.2);
 }
 
 .btn-3d:hover {
-  background: #3A795E !important; /* Fondo verde más claro al hover */
-  color: #ffffff !important; /* Texto blanco al hover */
+  background: var(--primary-green) !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(92, 184, 92, 0.4); /* Verde más claro */
+  box-shadow: 0 4px 12px rgba(58, 121, 94, 0.4);
 }
 
 .btn-3d:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(58, 121, 94, 0.3); /* Verde más claro */
+  box-shadow: 0 2px 6px var(--border-green);
 }
 
 /* NUEVO: Botón Balentziak - MODIFICADO: Verde más claro */
 .btn-balents {
-  background: #0a0a0a !important;
-  border: 2px solid #3A795E !important; /* Verde más claro */
-  color: #cccccc !important; /* MODIFICADO: Texto en gris claro como las etiquetas de información */
+  background: var(--bg) !important;
+  border: 2px solid var(--primary-green) !important;
+  color: var(--text-medium) !important;
   padding: 10px 16px !important;
   border-radius: 8px;
   font-size: 16px;
@@ -1064,29 +1073,29 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 !important; /* Cambiado: sin margen para que estén en el menú */
+  margin: 0 !important;
   width: 100% !important;
   min-width: auto !important;
-  box-shadow: 0 2px 8px rgba(58, 121, 94, 0.2); /* Verde más claro */
+  box-shadow: 0 2px 8px rgba(58, 121, 94, 0.2);
 }
 
 .btn-balents:hover {
-  background: #3A795E !important; /* Fondo verde más claro al hover */
-  color: #ffffff !important; /* Texto blanco al hover */
+  background: var(--primary-green) !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(58, 121, 94, 0.4); /* Verde más claro */
+  box-shadow: 0 4px 12px rgba(58, 121, 94, 0.4);
 }
 
 .btn-balents:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(58, 121, 94, 0.3); /* Verde más claro */
+  box-shadow: 0 2px 6px var(--border-green);
 }
 
 /* NUEVO: Botón Konposatu Inorganikoak */
 .btn-compounds {
-  background: #0a0a0a !important;
-  border: 2px solid #3A795E !important;
-  color: #cccccc !important;
+  background: var(--bg) !important;
+  border: 2px solid var(--primary-green) !important;
+  color: var(--text-medium) !important;
   padding: 10px 16px !important;
   border-radius: 8px;
   font-size: 16px;
@@ -1104,7 +1113,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .btn-compounds:hover {
-  background: #3A795E !important;
+  background: var(--primary-green) !important;
   color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(58, 121, 94, 0.4);
@@ -1112,14 +1121,14 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 .btn-compounds:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(58, 121, 94, 0.3);
+  box-shadow: 0 2px 6px var(--border-green);
 }
 
 /* NUEVO: Botón Kalkulu Tresnak */
 .btn-calc {
-  background: #0a0a0a !important;
-  border: 2px solid #3A795E !important;
-  color: #cccccc !important;
+  background: var(--bg) !important;
+  border: 2px solid var(--primary-green) !important;
+  color: var(--text-medium) !important;
   padding: 10px 16px !important;
   border-radius: 8px;
   font-size: 16px;
@@ -1137,7 +1146,7 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 }
 
 .btn-calc:hover {
-  background: #3A795E !important;
+  background: var(--primary-green) !important;
   color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(58, 121, 94, 0.4);
@@ -1145,11 +1154,11 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 
 .btn-calc:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(58, 121, 94, 0.3);
+  box-shadow: 0 2px 6px var(--border-green);
 }
   /* CORREGIDO: Estilo para el enlace del nombre del elemento - SIEMPRE BLANCO */
 .element-name-link {
-  color: #e6e6e6 !important;
+  color: var(--text-light) !important;
   text-decoration: none !important;
   font-weight: 600;
   cursor: pointer;
@@ -1160,18 +1169,18 @@ body{margin:0;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;backgro
 .element-name-link:focus,
 .element-name-link:active,
 .element-name-link:visited {
-  color: #e6e6e6 !important;
+  color: var(--text-light) !important;
   text-decoration: none !important;
   border-bottom: none !important;
 }
 
 /* Asegurar que el título principal siempre sea blanco */
 #titleMain {
-  color: #e6e6e6 !important;
+  color: var(--text-light) !important;
 }
 
 #titleMain a {
-  color: #e6e6e6 !important;
+  color: var(--text-light) !important;
   text-decoration: none !important;
 }
 
@@ -2403,11 +2412,11 @@ function show(el, cell){
   
   // Casos especiales para nombres que necesitan sufijo _(elementua)
   if (elementName === 'Merkurio') {
-    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Merkurio_(elementua )';
+    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Merkurio_(elementua)';
   } else if (elementName === 'Zerio') {
-    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Zerio_(elementua )';
+    wikipediaUrl = 'https://eu.wikipedia.org/wiki/Zerio_(elementua)';
   } else {
-    wikipediaUrl = `https://eu.wikipedia.org/wiki/ ${encodeURIComponent(elementName)}`;
+    wikipediaUrl = `https://eu.wikipedia.org/wiki/${encodeURIComponent(elementName)}`;
   }
   
   // Actualizar información básica con enlace
@@ -2519,4 +2528,3 @@ window.addEventListener('resize', applyZoom);
 </script> 
 </body>
 </html>
-
